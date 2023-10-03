@@ -47,10 +47,10 @@ tp_dict = {
 template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
 
 
-from openicl import TopkRetriever
+from openicl import RandomRetriever
 # Define a retriever using the previous `DataLoader`.
 # `ice_num` stands for the number of data in in-context examples.
-retriever = TopkRetriever(data, ice_num=8)
+retriever = RandomRetriever(data, ice_num=8)
 
 from openicl import PPLInferencer
 inferencer = PPLInferencer(model_name='distilgpt2')
