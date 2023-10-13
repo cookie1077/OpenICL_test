@@ -45,7 +45,7 @@ from openicl import RandomRetriever
 retriever = RandomRetriever(data, ice_num=3)
 
 import ParentInferencer
-inferencer = ParentInferencer.ParentInferencer(model_name='gpt2')
+inferencer = ParentInferencer.ParentInferencer(model_name='EleutherAI/gpt-j-6b')
 
 from openicl import AccEvaluator
 # the inferencer requires retriever to collect in-context examples, as well as a template to wrap up these examples.
@@ -53,10 +53,7 @@ predictions = inferencer.inference(retriever, ice_template=template)
 
 print(predictions)
 
-# compute accuracy for the prediction
-#score = AccEvaluator().score(predictions=predictions, references=data.references)
-#print(score)
-
+# Save predictions as file ! 
 
 
 
