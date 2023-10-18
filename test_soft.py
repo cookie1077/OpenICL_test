@@ -53,10 +53,10 @@ template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
 from openicl import RandomRetriever
 # Define a retriever using the previous `DataLoader`.
 # `ice_num` stands for the number of data in in-context examples.
-retriever = RandomRetriever(data, ice_num=8)
+retriever = RandomRetriever(data, ice_num=8) 
 
 from openicl import PPLInferencer
-inferencer = PPLInferencer(model_name='gpt-j-6b')
+inferencer = PPLInferencer(model_name='distilgpt2')
 
 from openicl import AccEvaluator
 # the inferencer requires retriever to collect in-context examples, as well as a template to wrap up these examples.

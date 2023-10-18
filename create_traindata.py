@@ -51,17 +51,20 @@ from openicl import AccEvaluator
 # the inferencer requires retriever to collect in-context examples, as well as a template to wrap up these examples.
 predictions = inferencer.inference(retriever, ice_template=template)
 
-print(predictions)
+for i, p in enumerate(predictions):
+    p["text"] = dataset_dict["test"][i]["text"]
+
+#print(predictions)
 
 # Save predictions as file ! 
 
+with open('data/train_mini_new.jsonl', 'w') as f:
+    for entry in predictions:
+        json.dump(entry, f)
+        f.write('\n')
 
 
-
-
-
-
-
+'''
 
 
 # Prepare variables
@@ -191,3 +194,5 @@ output_handler.merge_to_main_process(output_json_filepath, output_json_filename)
 output_handler.write_to_json(output_json_filepath, output_json_filename)
 
 #return [sample['prediction'] for sample in output_handler.results_dict.values()]
+
+'''
