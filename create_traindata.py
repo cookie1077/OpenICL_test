@@ -58,7 +58,7 @@ for i, p in enumerate(predictions):
 
 # Save predictions as file ! 
 
-with open('data/train_mini_new.jsonl', 'w') as f:
+with open('train_mini_newtest.jsonl', 'w') as f:
     for entry in predictions:
         json.dump(entry, f)
         f.write('\n')
