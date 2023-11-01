@@ -5,8 +5,11 @@ from datasets import load_dataset
 from datasets import Dataset, DatasetDict
 from openicl import DatasetReader
 import json
+import vessl
 
 # Before : preprocess data !
+
+vessl.init()
 
 def gen(file_path):
     with open(file_path, 'r') as f:
@@ -58,7 +61,7 @@ for i, p in enumerate(predictions):
 
 # Save predictions as file ! 
 
-with open('train_mini_newtest.jsonl', 'w') as f:
+with open('/output/train_mini_newtest.jsonl', 'w') as f:
     for entry in predictions:
         json.dump(entry, f)
         f.write('\n')
