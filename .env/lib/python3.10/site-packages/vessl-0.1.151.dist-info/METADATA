@@ -1,0 +1,140 @@
+Metadata-Version: 2.1
+Name: vessl
+Version: 0.1.151
+Summary: SDK and CLI for VESSL
+Home-page: https://vessl.ai/
+License: MIT
+Author: VESSL AI Dev Team
+Author-email: contact@vessl.ai
+Requires-Python: >=3.8,<3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Provides-Extra: media
+Requires-Dist: boto3 (>=1.18.9)
+Requires-Dist: click (>=8.0.1)
+Requires-Dist: cloudpickle (>=1.6.0,<2.0.0)
+Requires-Dist: docker (>=6.0.1)
+Requires-Dist: fastapi (>=0.78.0,<0.79.0)
+Requires-Dist: halo (>=0.0.31,<0.0.32)
+Requires-Dist: humanfriendly (>=10.0,<11.0)
+Requires-Dist: inquirer (>=3.1.3)
+Requires-Dist: kubernetes (>=24.2.0,<25.0.0)
+Requires-Dist: numpy (>=1.20.0,<1.25.0)
+Requires-Dist: packaging (>=21.0,<22.0)
+Requires-Dist: paramiko (>=2.11.0,<3.0.0)
+Requires-Dist: pillow (>=10.0.0,<11.0.0) ; extra == "media"
+Requires-Dist: psutil (>=5.8.0,<6.0.0)
+Requires-Dist: py_cpuinfo (>=8.0.0,<9.0.0)
+Requires-Dist: pynvml (>=11.0.0,<12.0.0)
+Requires-Dist: python-dotenv (>=1.0.0,<2.0.0)
+Requires-Dist: pyyaml (>=6.0.1,<7.0.0)
+Requires-Dist: requests (>=2.26.0,<3.0.0)
+Requires-Dist: requests-futures (>=1.0.0)
+Requires-Dist: schema (>=0.7.4)
+Requires-Dist: sentry-sdk (>=1.3.1)
+Requires-Dist: shortuuid (>=1.0.1)
+Requires-Dist: six (>=1.16.0,<2.0.0)
+Requires-Dist: soundfile (>=0.12.1,<0.13.0) ; extra == "media"
+Requires-Dist: sshpubkeys (>=3.3.1,<4.0.0)
+Requires-Dist: terminaltables (>=3.1.0)
+Requires-Dist: timeago (>=1.0.15,<2.0.0)
+Requires-Dist: toml (>=0.10.1,<0.11.0)
+Requires-Dist: tqdm (>=4.61.2,<5.0.0)
+Requires-Dist: uvicorn (>=0.16.0)
+Requires-Dist: watchdog (>=3.0.0,<4.0.0)
+Description-Content-Type: text/markdown
+
+# `vessl`
+
+This package serves as both CLI for your terminal and SDK for your projects.
+
+Documentation is provided at https://docs.vessl.ai/api-reference/what-is-the-vessl-cli-sdk. 
+
+## Install
+
+Currently VESSL CLI/SDK is available through PyPI only. 
+```shell
+pip install vessl
+```
+
+## VESSL CLI
+
+VESSL Command Line Interface is a convenient tool to access VESSL resources from your terminals.
+
+Refer to [VESSL CLI Docs](https://docs.vessl.ai/api-reference/cli) for details.
+
+
+### Configure VESSL CLI
+
+First, configure VESSL CLI with your account and set default organization / project.
+
+```shell
+> vessl configure
+Please grant CLI access from the URL below.
+https://vessl.ai/cli/grant-access?token=abcdxyz
+Waiting...
+[?] Default project: ...
+Welcome, VESSL!
+```
+
+### Check configuration
+
+Below command will display current configuration for VESSL CLI. 
+```shell
+> vessl whoami
+Username: VESSL
+Email: vessl@vessl.ai
+Default organization: my-default-organization
+Default project: my-default-project
+```
+
+
+## VESSL SDK
+
+VESSL Software Development Kit is a python library that allows easy access to VESSL resources in your python programs and scripts. 
+
+Refer to  [VESSL SDK Docs](https://docs.vessl.ai/api-reference/python-sdk) for details.
+
+
+```python
+import vessl
+
+vessl.init(organization_name="my-organization")
+vessl.create_experiment(...)
+```
+
+### Keras
+
+- Use ExperimentCallback
+
+```python
+import vessl
+from vessl.integration.keras import ExperimentCallback
+
+vessl.init()
+
+# Keras training code
+model = Model()
+model.compile(...)
+
+# Add integration
+model.fit(x, y, epochs=5, callbacks=[ExperimentCallback()])
+```
+
+- Run experiment on VESSL using Web UI or SDK
+
+## Misc.
+
+### For M1
+
+```bash
+docker context create remote --docker "host=ssh://ec2-user@10.110.3.24"
+docker context use remote
+docker build . -t vessl-python-sdk
+docker run vessl-python-sdk
+```
+

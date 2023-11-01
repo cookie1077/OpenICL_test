@@ -1,0 +1,4 @@
+[console_scripts]
+vessl=vessl.cli._main:cli
+vsl=vessl.cli._main:cli
+
