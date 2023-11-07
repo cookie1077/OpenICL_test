@@ -16,9 +16,9 @@ def gen(file_path):
         for line in f:
             yield json.loads(line)
             
-train_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/train.jsonl"})
+train_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/train_mini.jsonl"})
 val_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/dev.jsonl"})
-test_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/train.jsonl"})
+test_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/train_mini.jsonl"})
 
 dataset_dict = DatasetDict({"train": train_ds, "validation": val_ds, "test": test_ds})
 dataset = dataset_dict
@@ -61,7 +61,7 @@ for i, p in enumerate(predictions):
 
 # Save predictions as file ! 
 
-with open('/output/train_newtest.jsonl', 'w') as f:
+with open('/output/train_mini_newtest.jsonl', 'w') as f:
     for entry in predictions:
         json.dump(entry, f)
         f.write('\n')
