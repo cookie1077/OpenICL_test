@@ -24,16 +24,18 @@ dataset_dict = DatasetDict({"train": train_ds, "validation": val_ds, "test": tes
 #dataset = load_dataset('SetFit/sst5')
 dataset = dataset_dict
 
-print(dataset.keys(), "is the original")
-print(dataset_dict.keys(), "is the new")
+#print(dataset.keys(), "is the original")
+#print(dataset_dict.keys(), "is the new")
 
 # Define a DatasetReader, with specified column names where input and output are stored.
+# TODO : Define a DatasetReader 
 data = DatasetReader(dataset, input_columns=['text'], output_column='label')
 
 print(dataset.keys())  # prints the names of the available splits
 train_dataset = dataset['train']  # gets the training split
 test_dataset = dataset['test']  # gets the testing split
 
+# TODO : Alter PromptTemplate 
 from openicl import PromptTemplate
 tp_dict = {
     0: "</E>Very Negative Movie Review: </text>",
@@ -42,7 +44,6 @@ tp_dict = {
     3: "</E>Positive Movie Review: </text>" ,
     4: "</E>Very Positive Movie Review: </text>" 
 }
-
 
 template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
 

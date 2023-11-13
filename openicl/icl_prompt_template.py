@@ -110,7 +110,7 @@ class PromptTemplate:
                 tp = tp.replace(token, str(self.selected_column_map[label]))
             else:
                 tp = tp.replace(token, str(entry[key]))
-        return tp
+        return tp 
 
 
     def generate_item(self, entry: Dict, output_field: Optional[Hashable] = None,

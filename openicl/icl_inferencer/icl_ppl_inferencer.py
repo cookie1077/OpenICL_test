@@ -70,17 +70,19 @@ class PPLInferencer(BaseInferencer):
         # 2. Get results of retrieval process
         ice_idx_list = retriever.retrieve()
 
-        # 3. Get labels of all the classes
+        # 3. Get labels of all the classes # modify here : not neccessary?
         if self.labels is None:
             labels = retriever.get_labels(ice_template=ice_template, prompt_template=prompt_template)
         else:
             labels = self.labels
 
         # 4. Generate in-context examples for testing inputs
+        # TODO : generate icl examples with whole labels. 
         for idx in range(len(ice_idx_list)):
             ice.append(retriever.generate_ice(ice_idx_list[idx], ice_template=ice_template))
         output_handler.save_ice(ice)
 
+        # Here important : need to see !
         # 5. Calculating PPL for prompts in each label's class
         for label in labels:
             index = 0
