@@ -122,6 +122,8 @@ class PPLInferencer(BaseInferencer):
                     normalizing_prompt_list.append(normalizing_prompt)
                 prompt_list.append(prompt)
 
+            print(prompt_list[0])
+
             if normalizing_str is not None:
                 normalizing_str_len = self.get_input_token_num(normalizing_str)
 
