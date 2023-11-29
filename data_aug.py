@@ -1,7 +1,10 @@
 import json
+import vessl
+
+vessl.init()
 
 # Open both files
-with open('train.jsonl', 'r') as f1, open('train_newtest.jsonl', 'r') as f2:
+with open('data/train.jsonl', 'r') as f1, open('data/train_newtest.jsonl', 'r') as f2:
     lines1 = f1.readlines()
     lines2 = f2.readlines()
 
@@ -27,6 +30,6 @@ for line1, line2 in zip(lines1, lines2):
     new_rows.append(json1)
 
 # Write the new rows to a new file
-with open('train_newtest2.jsonl', 'w') as f:
+with open('/output/train_newtest2.jsonl', 'w') as f:
     for row in new_rows:
         f.write(json.dumps(row) + '\n')
