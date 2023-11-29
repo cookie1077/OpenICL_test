@@ -34,7 +34,7 @@ class DatasetReader:
     def __init__(self,
                  dataset: Union[Dataset, DatasetDict, str],
                  input_columns: Union[List[str], str],
-                 output_column: str, # need to modify here
+                 output_column: Union[List[str], str], 
                  name: Optional[str] = None,
                  data_files: Optional[str] = None,
                  input_template: Optional[PromptTemplate] = None,
@@ -47,7 +47,9 @@ class DatasetReader:
         self.input_columns = _check_type_list(input_columns, [List, str])
         if isinstance(self.input_columns, str):
             self.input_columns = self.input_columns.split()
-        self.output_column = _check_str(output_column) # modify here
+        self.output_column = _check_type_list(output_column, [List, str])
+        if isinstance(self.output_column, str):
+            self.output_column = self.output_column.split()
         self.ds_size = _check_type_list(ds_size, [None, int, float])
         if input_template is not None:
             self.input_template = PromptTemplate._check_prompt_template(input_template)

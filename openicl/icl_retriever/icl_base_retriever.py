@@ -28,6 +28,7 @@ class BaseRetriever:
 
     def __init__(self,
                  dataset_reader: DatasetReader,
+                 labels: Optional[List] = None,
                  ice_separator: Optional[str] = '\n',
                  ice_eos_token: Optional[str] = '\n',
                  prompt_eos_token: Optional[str] = '',
@@ -37,6 +38,7 @@ class BaseRetriever:
                  accelerator: Optional[Accelerator] = None
                  ) -> None:
         self.dataset_reader = DatasetReader._check_dataset_reader(dataset_reader)
+        self.labels = labels
         self.ice_separator = ice_separator
         self.ice_eos_token = ice_eos_token
         self.prompt_eos_token = prompt_eos_token
@@ -84,19 +86,38 @@ class BaseRetriever:
             labels = list(set(self.test_ds[self.dataset_reader.output_column]))
         return labels
 
+    def _get_high_label(self, entry: Dict, labels: List, ice_template: Dict) -> Dict:
+        scores = [float(entry[label]) for label in labels if label in entry]
+
+        # need to fix later.
+        # Get the index-value pairs for all elements in the list
+        index_value_pairs = list(enumerate(scores))
+
+        # Sort the index-value pairs based on the value in descending order
+        sorted_pairs = sorted(index_value_pairs, key=lambda x: x[1], reverse=True)
+
+        # Get the indices of the highest and second highest values
+        label1 = str(sorted_pairs[0][0])
+        label2 = str(sorted_pairs[1][0])
+        
+        return {'label1' : label1, 'label2' : label2}
+
     def generate_ice(self, idx_list: List[int], ice_template: Optional[PromptTemplate] = None) -> str:
         generated_ice_list = []
         dr = self.dataset_reader
         for idx in idx_list:
+            high_label = self._get_high_label(self.index_dx[idx], self.labels, ice_template)
             if ice_template is None:
                 generated_ice_list.append(' '.join(list(map(str,
                                                             [self.index_ds[idx][ctx] for ctx in dr.input_columns] + [
                                                                 self.index_ds[idx][dr.output_column]]))))
             else:
                 generated_ice_list.append(
-                    ice_template.generate_ice_item(self.index_ds[idx], self.index_ds[idx][dr.output_column]))
+                    ice_template.generate_ice_item(self.index_ds[idx], self.index_ds[idx][dr.output_column], high_label))
         generated_ice = self.ice_separator.join(generated_ice_list) + self.ice_eos_token
         return generated_ice
+    
+
 
     def generate_prompt(self, idx: int, ice: str, ice_template: Optional[PromptTemplate] = None,
                         prompt_template: Optional[PromptTemplate] = None) -> Tuple[List[str], List]:
