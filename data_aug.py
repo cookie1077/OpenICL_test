@@ -3,6 +3,8 @@ import json
 
 #vessl.init()
 
+'''
+# code snippet to transfer codes 
 # Open both files
 with open('data/train.jsonl', 'r') as f2, open('data/train_newtest.jsonl', 'r') as f1:
     lines1 = f1.readlines()
@@ -33,3 +35,30 @@ for line1, line2 in zip(lines1, lines2):
 with open('data/train_newtest2.jsonl', 'w') as f:
     for row in new_rows:
         f.write(json.dumps(row) + '\n')
+
+'''
+
+import json
+import pandas as pd
+import numpy as np
+
+columns = ['0', '1', '2', '3', '4']
+
+def softmax(x):
+    print(x)
+    e_x = np.exp(x)
+    return e_x / e_x.sum(axis=0)
+
+def process_jsonl(file_path, output_file_path):
+    data = []
+    with open(file_path, 'r') as f:
+        for line in f:
+            data.append(json.loads(line))
+    df = pd.DataFrame(data)
+
+    df[columns] = df[columns].apply(softmax, axis = 1)
+
+    df.to_json(output_file_path, orient='records', lines=True)
+    return df
+
+df = process_jsonl('data/train_newtest2.jsonl', 'data/train_newtest3.jsonl')
