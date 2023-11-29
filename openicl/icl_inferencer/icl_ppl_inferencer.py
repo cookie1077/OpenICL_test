@@ -82,7 +82,7 @@ class PPLInferencer(BaseInferencer):
             ice.append(retriever.generate_ice(ice_idx_list[idx], ice_template=ice_template))
         output_handler.save_ice(ice)
 
-        print(ice)
+        print(ice[0])
         print('-----------------')
 
         # Here important : need to see !
@@ -125,7 +125,7 @@ class PPLInferencer(BaseInferencer):
                     normalizing_prompt_list.append(normalizing_prompt)
                 prompt_list.append(prompt)
 
-            #print(prompt_list[0])
+            print(prompt_list[0])
 
             if normalizing_str is not None:
                 normalizing_str_len = self.get_input_token_num(normalizing_str)
