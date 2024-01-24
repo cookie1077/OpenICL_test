@@ -2,6 +2,7 @@
 
 from typing import Dict, Optional, Union, Hashable
 from .utils.check_type import _check_type_list, _check_dict
+import math 
 
 
 class PromptTemplate:
@@ -55,7 +56,7 @@ class PromptTemplate:
         if self.ice_token is not None and self.ice_token in self.column_token_map.values():
             raise ValueError(f"There are duplicates between self.column_token_map.values() and self.ice_token")
 
-    def generate_ice_item(self, entry: Dict, label: Hashable, high_label: Optional[Dict] = None) -> str:
+    def generate_ice_item(self, entry: Dict, label: Hashable) -> str:
         """Generate in-context example based on the provided :obj:`entry` data.
 
         Args:
@@ -78,10 +79,9 @@ class PromptTemplate:
             if self.selected_column_map is not None and key == self.selected_column_name:
                 tp = tp.replace(token, str(self.selected_column_map[label]))
             else:
-                if key in high_label:
-                    tp = tp.replace(token, str(self.label_dict[high_label[key]]))
-                else:
-                    tp = tp.replace(token, str(entry[key]))
+                text = str(entry[key])
+                if key != 'text' : text = str(round(float(text), 2))
+                tp = tp.replace(token, text)
         return tp
 
     def generate_label_prompt_item(self, entry: Dict, ice: str, label: Hashable, remain_sep: Optional[bool] = False) -> str:

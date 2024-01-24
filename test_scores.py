@@ -16,7 +16,6 @@ val_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/dev_mini.jso
 test_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/test_mini.jsonl"})
 
 dataset_dict = DatasetDict({"train": train_ds, "validation": val_ds, "test": test_ds})
-# i am changed too. 
 
 
 # Loading dataset from huggingface
@@ -34,7 +33,9 @@ test_dataset = dataset['test']  # gets the testing split
 
 # TODO : Alter PromptTemplate 
 from openicl import PromptTemplate
-ice_dict = "</E> </label1> </label2> Movie Review: </text>"
+
+# need to make them show percentage
+ice_dict = "</E> Movie Review: </text> /n Very Positive </VP>% Positive </P>% Neutral </N>% Negative </NG>% Very Negative </VN>%"
 
 tp_dict = {
     0: "</E>Very Negative Movie Review: </text>",
@@ -44,8 +45,8 @@ tp_dict = {
     4: "</E>Very Positive Movie Review: </text>" 
 }
 
-column_token_map = {'text': '</text>', 'label1' : '</label1>', 'label2' : '</label2>' }
-ice_template = PromptTemplate(ice_dict, label_dict, column_token_map, ice_token='</E>')
+column_token_map = {'text': '</text>', '0' : '</VP>', '1' : '</P>', '2' : '</N>', '3' : '</NG>', '4' : '</VN>' }
+ice_template = PromptTemplate(ice_dict, column_token_map, ice_token='</E>')
 prompt_template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
 
 

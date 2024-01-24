@@ -70,7 +70,7 @@ class PPLInferencer(BaseInferencer):
         # 2. Get results of retrieval process
         ice_idx_list = retriever.retrieve()
 
-        # 3. Get labels of all the classes # modify here : not neccessary?
+        # 3. Get labels of all the classes # modify here : not neccessary
         if self.labels is None:
             labels = retriever.get_labels(ice_template=ice_template, prompt_template=prompt_template)
         else:

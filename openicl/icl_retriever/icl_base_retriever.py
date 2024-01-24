@@ -106,14 +106,14 @@ class BaseRetriever:
         generated_ice_list = []
         dr = self.dataset_reader
         for idx in idx_list:
-            high_label = self._get_high_label(self.index_dx[idx], self.labels, ice_template)
+            #high_label = self._get_high_label(self.index_dx[idx], self.labels, ice_template)
             if ice_template is None:
                 generated_ice_list.append(' '.join(list(map(str,
                                                             [self.index_ds[idx][ctx] for ctx in dr.input_columns] + [
                                                                 self.index_ds[idx][dr.output_column]]))))
             else:
                 generated_ice_list.append(
-                    ice_template.generate_ice_item(self.index_ds[idx], self.index_ds[idx][dr.output_column], high_label))
+                    ice_template.generate_ice_item(self.index_ds[idx], self.index_ds[idx][dr.output_column]))
         generated_ice = self.ice_separator.join(generated_ice_list) + self.ice_eos_token
         return generated_ice
     
