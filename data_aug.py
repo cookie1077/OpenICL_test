@@ -44,9 +44,10 @@ import numpy as np
 
 columns = ['0', '1', '2', '3', '4']
 
-def softmax(x):
+def rec_softmax(x):
     print(x)
     e_x = np.exp(x)
+    e_x = 1/e_x
     return e_x / e_x.sum(axis=0)
 
 def process_jsonl(file_path, output_file_path):
@@ -56,9 +57,9 @@ def process_jsonl(file_path, output_file_path):
             data.append(json.loads(line))
     df = pd.DataFrame(data)
 
-    df[columns] = df[columns].apply(softmax, axis = 1)
+    df[columns] = df[columns].apply(rec_softmax, axis = 1)
 
     df.to_json(output_file_path, orient='records', lines=True)
     return df
 
-df = process_jsonl('data/train_newtest2.jsonl', 'data/train_newtest3.jsonl')
+df = process_jsonl('data/train_newtest2.jsonl', 'data/train_newagain.jsonl')

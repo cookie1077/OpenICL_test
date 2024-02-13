@@ -48,8 +48,7 @@ class DatasetReader:
         if isinstance(self.input_columns, str):
             self.input_columns = self.input_columns.split()
         self.output_column = _check_type_list(output_column, [List, str])
-        if isinstance(self.output_column, str):
-            self.output_column = self.output_column.split()
+        
         self.ds_size = _check_type_list(ds_size, [None, int, float])
         if input_template is not None:
             self.input_template = PromptTemplate._check_prompt_template(input_template)

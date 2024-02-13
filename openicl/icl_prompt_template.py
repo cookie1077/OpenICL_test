@@ -80,7 +80,7 @@ class PromptTemplate:
                 tp = tp.replace(token, str(self.selected_column_map[label]))
             else:
                 text = str(entry[key])
-                if key != 'text' : text = str(round(float(text), 2))
+                if key != 'text' : text = str(round(float(text)*100, 2))
                 tp = tp.replace(token, text)
         return tp
 

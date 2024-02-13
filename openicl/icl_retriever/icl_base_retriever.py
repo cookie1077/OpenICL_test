@@ -28,14 +28,14 @@ class BaseRetriever:
 
     def __init__(self,
                  dataset_reader: DatasetReader,
-                 labels: Optional[List] = None,
                  ice_separator: Optional[str] = '\n',
                  ice_eos_token: Optional[str] = '\n',
                  prompt_eos_token: Optional[str] = '',
                  ice_num: Optional[int] = 1,
                  index_split: Optional[str] = 'train',
                  test_split: Optional[str] = 'test',
-                 accelerator: Optional[Accelerator] = None
+                 accelerator: Optional[Accelerator] = None,
+                 labels: Optional[List] = None
                  ) -> None:
         self.dataset_reader = DatasetReader._check_dataset_reader(dataset_reader)
         self.labels = labels

@@ -41,25 +41,33 @@ from openicl import PromptTemplate
 ice_dict = "</E> Movie Review: </text> \n Very Positive </VP>% Positive </P>% Neutral </N>% Negative </NG>% Very Negative </VN>%"
 
 tp_dict = {
-    '0': "</E>Very Negative Movie Review: </text>",
-    '1': "</E>Negative Movie Review: </text>",
-    '2': "</E>Neutral Movie Review: </text>" ,
-    '3': "</E>Positive Movie Review: </text>" ,
-    '4': "</E>Very Positive Movie Review: </text>" 
+    0 : "</E>Very Negative Movie Review: </text>",
+    1 : "</E>Negative Movie Review: </text>",
+    2 : "</E>Neutral Movie Review: </text>" ,
+    3 : "</E>Positive Movie Review: </text>" ,
+    4 : "</E>Very Positive Movie Review: </text>" 
+}
+
+ice_dict2 = {
+    0 : "</E>Movie Review: </text> \n Very Negative",
+    1 : "</E>Movie Review: </text> \n Negative",
+    2 : "</E>Movie Review: </text> \n Neutral" ,
+    3 : "</E>Movie Review: </text> \n Positive" ,
+    4 : "</E>Movie Review: </text> \n Very Positive" 
 }
 
 column_token_map = {'text': '</text>', '4' : '</VP>', '3' : '</P>', '2' : '</N>', '1' : '</NG>', '0' : '</VN>' }
-ice_template = PromptTemplate(ice_dict, column_token_map, ice_token='</E>')
+ice_template = PromptTemplate(ice_dict2, column_token_map, ice_token='</E>')
 prompt_template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
 
 
 from openicl import RandomRetriever
 # Define a retriever using the previous `DataLoader`.
 # `ice_num` stands for the number of data in in-context examples.
-retriever = RandomRetriever(data, ice_num=8, labels= ['0', '1', '2', '3', '4'] )
+retriever = RandomRetriever(data, ice_num=8, labels= [0, 1, 2, 3, 4] )
 
 from openicl import PPLInferencer
-inferencer = PPLInferencer(model_name='distilgpt2', labels= ['0', '1', '2', '3', '4'])
+inferencer = PPLInferencer(model_name='distilgpt2', labels= [0, 1, 2, 3, 4])
 
 from openicl import AccEvaluator
 # the inferencer requires retriever to collect in-context examples, as well as a template to wrap up these examples.
