@@ -5,6 +5,9 @@ from datasets import load_dataset
 from datasets import Dataset, DatasetDict
 from openicl import DatasetReader
 import json
+import vessl 
+
+vessl.init()
 
 def gen(file_path):
     with open(file_path, 'r') as f:
