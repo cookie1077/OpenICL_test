@@ -45,8 +45,8 @@ from openicl import PromptTemplate
 def test_sequence(ice_num, data):
 
     # need to make them show percentage
-    #ice_dict = "</E>Movie Review: </text> \n</Label1> </1>% </Label2> </2>%"
-    ice_dict = "</E>Movie Review: </text> \n</Label1> </Label2>%"
+    ice_dict = "</E>Movie Review: </text> \n</Label1> </1>% </Label2> </2>%"
+    #ice_dict = "</E>Movie Review: </text> \n</Label1> </Label2>%"
 
     tp_dict = {
         '0': "</E>Movie Review: </text> \nNegative",
@@ -118,9 +118,9 @@ def test_origin(ice_num, data):
 
 sequence = []
 origin = []
-x = [n for n in range(9)]
+x = [n for n in range(20)]
 
-for i in range(9):
+for i in range(20):
     sequence.append(test_sequence(i, data)['accuracy'])
     origin.append(test_origin(i, data)['accuracy'])
 
