@@ -37,36 +37,95 @@ test_dataset = dataset['test']  # gets the testing split
 # TODO : Alter PromptTemplate 
 from openicl import PromptTemplate
 
-# need to make them show percentage
-ice_dict = "</E> Movie Review: </text> \n</Label1> </1>% </Label2> </2>% "
 
-tp_dict = {
-    '0': "</E>Movie Review: </text> \nNegative",
-    '1': "</E>Movie Review: </text> \nPositive"
-}
+# Test for sequence
+def sequence(ice_num, data):
 
-label_dict = {
-    '0': "Negative",
-    '1': "Positive"
-}
+    # need to make them show percentage
+    ice_dict = "</E> Movie Review: </text> \n</Label1> </1>% </Label2> </2>% "
+
+    tp_dict = {
+        '0': "</E>Movie Review: </text> \nNegative",
+        '1': "</E>Movie Review: </text> \nPositive"
+    }
+
+    label_dict = {
+        '0': "Negative",
+        '1': "Positive"
+    }
 
 
-column_token_map = {'text': '</text>', 0 : '</1>', 'Label1' : '</Label1>', 1 : '</2>', 'Label2' : '</Label2>' }
-ice_template = PromptTemplate(ice_dict, column_token_map, label_dict=label_dict, ice_token='</E>')
-prompt_template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
+    column_token_map = {'text': '</text>', 0 : '</1>', 'Label1' : '</Label1>', 1 : '</2>', 'Label2' : '</Label2>' }
+    ice_template = PromptTemplate(ice_dict, column_token_map, label_dict=label_dict, ice_token='</E>')
+    prompt_template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
 
 
-from openicl import RandomRetriever
-# Define a retriever using the previous `DataLoader`.
-# `ice_num` stands for the number of data in in-context examples.
-retriever = RandomRetriever(data, ice_num=0, labels= ['0', '1'] )
+    from openicl import RandomRetriever
+    # Define a retriever using the previous `DataLoader`.
+    # `ice_num` stands for the number of data in in-context examples.
+    retriever = RandomRetriever(data, ice_num=ice_num, labels= ['0', '1'] )
 
-from openicl import PPLInferencer
-inferencer = PPLInferencer(model_name='distilgpt2', labels= ['0', '1'])
+    from openicl import PPLInferencer
+    inferencer = PPLInferencer(model_name='distilgpt2', labels= ['0', '1'])
 
-from openicl import AccEvaluator
-# the inferencer requires retriever to collect in-context examples, as well as a template to wrap up these examples.
-predictions = inferencer.inference(retriever, ice_template=ice_template, prompt_template=prompt_template)
-# compute accuracy for the prediction
-score = AccEvaluator().score(predictions=predictions, references=data.references)
-print(score)
+    from openicl import AccEvaluator
+    # the inferencer requires retriever to collect in-context examples, as well as a template to wrap up these examples.
+    predictions = inferencer.inference(retriever, ice_template=ice_template, prompt_template=prompt_template)
+    # compute accuracy for the prediction
+    score = AccEvaluator().score(predictions=predictions, references=data.references)
+    
+    return score
+
+def origin(ice_num, data):
+    # need to make them show percentage
+    ice_dict = "</E> Movie Review: </text> \nPositive </P>% Negative </N>%"
+
+    ice_dict2 = {
+        0 : "</E>Movie Review: </text> \nNegative",
+        1 : "</E>Movie Review: </text> \nPositive",
+    }
+
+    tp_dict = {
+        0 : "</E>Movie Review: </text> \nNegative",
+        1 : "</E>Movie Review: </text> \nPositive"
+    }
+
+    column_token_map = {'text': '</text>', 'positive_prob' : '</P>', 'negative_prob' : '</N>' }
+    ice_template = PromptTemplate(ice_dict2, column_token_map, ice_token='</E>')
+    prompt_template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
+
+
+    from openicl import RandomRetriever
+    # Define a retriever using the previous `DataLoader`.
+    # `ice_num` stands for the number of data in in-context examples.
+    retriever = RandomRetriever(data, ice_num=ice_num, labels= [0,1] )
+
+    from openicl import PPLInferencer
+    inferencer = PPLInferencer(model_name='distilgpt2', labels= [0,1])
+
+    from openicl import AccEvaluator
+    # the inferencer requires retriever to collect in-context examples, as well as a template to wrap up these examples.
+    predictions = inferencer.inference(retriever, ice_template=ice_template, prompt_template=prompt_template)
+    # compute accuracy for the prediction
+    score = AccEvaluator().score(predictions=predictions, references=data.references)
+    
+    return score
+
+
+sequence = []
+origin = []
+x = [n for n in range(9)]
+
+for i in range(9):
+    sequence.append(sequence(i, data))
+    origin.append(origin(i, data))
+
+print(sequence)
+print(origin)
+
+import matplotlib.pyplot as plt
+
+plt.plot(x, sequence)
+plt.plot(x, origin)
+
+plt.legend()
