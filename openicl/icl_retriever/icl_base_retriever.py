@@ -35,7 +35,8 @@ class BaseRetriever:
                  index_split: Optional[str] = 'train',
                  test_split: Optional[str] = 'test',
                  accelerator: Optional[Accelerator] = None,
-                 labels: Optional[List] = None
+                 labels: Optional[List] = None,
+                 order: Optional[bool] = False
                  ) -> None:
         self.dataset_reader = DatasetReader._check_dataset_reader(dataset_reader)
         self.labels = labels
@@ -46,6 +47,7 @@ class BaseRetriever:
         self.index_split = index_split
         self.test_split = test_split
         self.accelerator = accelerator
+        self.order = order
         self.is_main_process = True if self.accelerator is None or self.accelerator.is_main_process else False
         if isinstance(self.dataset_reader.dataset, Dataset):
             self.index_ds = self.dataset_reader.dataset
@@ -113,7 +115,7 @@ class BaseRetriever:
                                                                 self.index_ds[idx][dr.output_column]]))))
             else:
                 generated_ice_list.append(
-                    ice_template.generate_ice_item(self.index_ds[idx], self.index_ds[idx][dr.output_column], order=True))
+                    ice_template.generate_ice_item(self.index_ds[idx], self.index_ds[idx][dr.output_column], order=self.order))
         generated_ice = self.ice_separator.join(generated_ice_list) + self.ice_eos_token
         return generated_ice
     

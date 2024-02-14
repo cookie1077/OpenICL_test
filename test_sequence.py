@@ -66,7 +66,7 @@ def test_sequence(ice_num, data):
     from openicl import RandomRetriever
     # Define a retriever using the previous `DataLoader`.
     # `ice_num` stands for the number of data in in-context examples.
-    retriever = RandomRetriever(data, ice_num=ice_num, labels= ['0', '1'] )
+    retriever = RandomRetriever(data, ice_num=ice_num, labels= ['0', '1'], order=True)
 
     from openicl import PPLInferencer
     inferencer = PPLInferencer(model_name='distilgpt2', labels= ['0', '1'])
