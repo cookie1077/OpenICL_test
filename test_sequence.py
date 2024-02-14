@@ -93,7 +93,7 @@ def test_origin(ice_num, data):
         1 : "</E>Movie Review: </text> \nPositive"
     }
 
-    column_token_map = {'text': '</text>', 'positive_prob' : '</P>', 'negative_prob' : '</N>' }
+    column_token_map = {'text': '</text>', '0' : '</P>', '1' : '</N>' }
     ice_template = PromptTemplate(ice_dict2, column_token_map, ice_token='</E>')
     prompt_template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
 
