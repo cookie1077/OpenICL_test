@@ -113,7 +113,7 @@ class BaseRetriever:
                                                                 self.index_ds[idx][dr.output_column]]))))
             else:
                 generated_ice_list.append(
-                    ice_template.generate_ice_item(self.index_ds[idx], self.index_ds[idx][dr.output_column]))
+                    ice_template.generate_ice_item(self.index_ds[idx], self.index_ds[idx][dr.output_column], order=True))
         generated_ice = self.ice_separator.join(generated_ice_list) + self.ice_eos_token
         return generated_ice
     

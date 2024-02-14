@@ -25,6 +25,7 @@ class PromptTemplate:
                  selected_column_map: Optional[Dict] = None,
                  ice_token: Optional[str] = None,
                  sep_token: Optional[str] = None,
+                 binning: Optional[Dict] = None
                  ) -> None:
         self.template = _check_type_list(template, [Dict, str])
         self.column_token_map = _check_dict(column_token_map)
@@ -33,6 +34,7 @@ class PromptTemplate:
         self.label_dict = _check_type_list(label_dict, [None, Dict])
         self.ice_token = _check_type_list(ice_token, [None, str])
         self.sep_token = _check_type_list(sep_token, [None, str])
+        self.binning = binning
         if (self.selected_column_name is not None and self.selected_column_map is None) or \
                 self.selected_column_name is None and self.selected_column_map is not None:
             raise ValueError("self.selected_column_name and self.selected_column_map should be set together")
@@ -56,7 +58,7 @@ class PromptTemplate:
         if self.ice_token is not None and self.ice_token in self.column_token_map.values():
             raise ValueError(f"There are duplicates between self.column_token_map.values() and self.ice_token")
 
-    def generate_ice_item(self, entry: Dict, label: Hashable) -> str:
+    def generate_ice_item(self, entry: Dict, label: Hashable, order=False) -> str:
         """Generate in-context example based on the provided :obj:`entry` data.
 
         Args:
@@ -74,14 +76,32 @@ class PromptTemplate:
         # Remove ice_token
         if self.ice_token is not None:
             tp = tp.replace(self.ice_token, '')
+
+        if order:
+            label_dict = {v : entry[k] for k , v in self.label_dict.items()}
+
+            sorted_dict = {k: v for k, v in sorted(label_dict.items(), key=lambda item: item[1], reverse=True)}
+            labels = {'Label'+str(i+1) : list(sorted_dict.keys())[i] for i in range(len(sorted_dict.keys()))}
+            probs = list(sorted_dict.values())
+
         # Replace context token
         for key, token in self.column_token_map.items():
             if self.selected_column_map is not None and key == self.selected_column_name:
                 tp = tp.replace(token, str(self.selected_column_map[label]))
             else:
-                text = str(entry[key])
-                if key != 'text' : text = str(round(float(text)*100, 2))
-                tp = tp.replace(token, text)
+                if 'Label' in token and order:
+                    tp = tp.replace(token, labels[key])
+                elif key != 'text' and order:
+                    if self.binning is None : 
+                        text = str(round(float(probs[key])*100, 2))
+                    else :
+                        text = self.binning[key]
+                    tp = tp.replace(token, text)
+                else:
+                    text = str(entry[key])
+                    if key != 'text' : text = str(round(float(text)*100, 2))
+                    tp = tp.replace(token, text)
+
         return tp
 
     def generate_label_prompt_item(self, entry: Dict, ice: str, label: Hashable, remain_sep: Optional[bool] = False) -> str:

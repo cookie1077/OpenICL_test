@@ -11,9 +11,9 @@ def gen(file_path):
         for line in f:
             yield json.loads(line)
             
-train_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/train_mini.jsonl"})
-val_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/dev_mini.jsonl"})
-test_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/test_mini.jsonl"})
+train_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/sst2/train_newagain.jsonl"})
+val_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/sst2/dev.jsonl"})
+test_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/sst2/test.jsonl"})
 
 dataset_dict = DatasetDict({"train": train_ds, "validation": val_ds, "test": test_ds})
 
@@ -38,28 +38,31 @@ test_dataset = dataset['test']  # gets the testing split
 from openicl import PromptTemplate
 
 # need to make them show percentage
-ice_dict = "</E> Movie Review: </text> \n Very Positive </VP>% Positive </P>% Neutral </N>% Negative </NG>% Very Negative </VN>%"
+ice_dict = "</E> Movie Review: </text> \n </Label1> </1>% </Label2> </2>% "
 
 tp_dict = {
-    '0': "</E>Movie Review: </text> \n Very Negative",
-    '1': "</E>Movie Review: </text> \n Negative",
-    '2': "</E>Movie Review: </text> \n Neutral" ,
-    '3': "</E>Movie Review: </text> \n Positive" ,
-    '4': "</E>Movie Review: </text> \n Very Positive" 
+    '0': "</E>Movie Review: </text> \n Negative",
+    '1': "</E>Movie Review: </text> \n Positive"
 }
 
-column_token_map = {'text': '</text>', '4' : '</VP>', '3' : '</P>', '2' : '</N>', '1' : '</NG>', '0' : '</VN>' }
-ice_template = PromptTemplate(ice_dict, column_token_map, ice_token='</E>')
+label_dict = {
+    '0': "Negative",
+    '1': "Positive"
+}
+
+
+column_token_map = {'text': '</text>', 0 : '</1>', 'Label1' : '</Label1>', 1 : '</2>', 'Label2' : '</Label2>' }
+ice_template = PromptTemplate(ice_dict, column_token_map, label_dict=label_dict, ice_token='</E>')
 prompt_template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
 
 
 from openicl import RandomRetriever
 # Define a retriever using the previous `DataLoader`.
 # `ice_num` stands for the number of data in in-context examples.
-retriever = RandomRetriever(data, ice_num=8, labels= ['0', '1', '2', '3', '4'] )
+retriever = RandomRetriever(data, ice_num=8, labels= ['0', '1'] )
 
 from openicl import PPLInferencer
-inferencer = PPLInferencer(model_name='distilgpt2', labels= ['0', '1', '2', '3', '4'])
+inferencer = PPLInferencer(model_name='distilgpt2', labels= ['0', '1'])
 
 from openicl import AccEvaluator
 # the inferencer requires retriever to collect in-context examples, as well as a template to wrap up these examples.
