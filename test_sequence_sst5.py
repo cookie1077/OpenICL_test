@@ -132,7 +132,7 @@ sequence = []
 origin = []
 x = [n for n in range(1)]
 
-for i in range(1):
+for i in range(10):
     sequence.append(test_sequence(i, data)['accuracy'])
     origin.append(test_origin(i, data)['accuracy'])
 
