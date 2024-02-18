@@ -49,11 +49,11 @@ def test_sequence(ice_num, data):
     #ice_dict = "</E>Movie Review: </text> \n</Label1> </Label2>%"
 
     tp_dict = {
-        0 : "</E>Movie Review: </text> \n Very Negative",
-        1 : "</E>Movie Review: </text> \n Negative",
-        2 : "</E>Movie Review: </text> \n Neutral" ,
-        3 : "</E>Movie Review: </text> \n Positive" ,
-        4 : "</E>Movie Review: </text> \n Very Positive" 
+        '0' : "</E>Movie Review: </text> \n Very Negative",
+        '1' : "</E>Movie Review: </text> \n Negative",
+        '2' : "</E>Movie Review: </text> \n Neutral" ,
+        '3' : "</E>Movie Review: </text> \n Positive" ,
+        '4' : "</E>Movie Review: </text> \n Very Positive" 
     }
 
     label_dict = {
@@ -73,10 +73,10 @@ def test_sequence(ice_num, data):
     from openicl import RandomRetriever
     # Define a retriever using the previous `DataLoader`.
     # `ice_num` stands for the number of data in in-context examples.
-    retriever = RandomRetriever(data, ice_num=ice_num, labels= [0, 1, 2, 3, 4], order=True)
+    retriever = RandomRetriever(data, ice_num=ice_num, labels= ['0', '1', '2', '3', '4'], order=True)
 
     from openicl import PPLInferencer
-    inferencer = PPLInferencer(model_name='distilgpt2', labels= [0, 1, 2, 3, 4])
+    inferencer = PPLInferencer(model_name='distilgpt2', labels= ['0', '1', '2', '3', '4'])
 
     from openicl import AccEvaluator
     # the inferencer requires retriever to collect in-context examples, as well as a template to wrap up these examples.
@@ -99,11 +99,11 @@ def test_origin(ice_num, data):
     }
 
     tp_dict = {
-        '0' : "</E>Movie Review: </text> \n Very Negative",
-        '1' : "</E>Movie Review: </text> \n Negative",
-        '2' : "</E>Movie Review: </text> \n Neutral" ,
-        '3' : "</E>Movie Review: </text> \n Positive" ,
-        '4' : "</E>Movie Review: </text> \n Very Positive" 
+        0 : "</E>Movie Review: </text> \n Very Negative",
+        1 : "</E>Movie Review: </text> \n Negative",
+        2 : "</E>Movie Review: </text> \n Neutral" ,
+        3 : "</E>Movie Review: </text> \n Positive" ,
+        4 : "</E>Movie Review: </text> \n Very Positive" 
     }
 
     column_token_map = {'text': '</text>', '0' : '</P>', '1' : '</N>' }
