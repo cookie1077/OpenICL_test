@@ -57,11 +57,11 @@ def test_sequence(ice_num, data):
     }
 
     label_dict = {
-        0: "Very Negative",
-        1: "Negative",
-        2: "Neutral",
-        3: "Positive",
-        4: "Very Positive"
+        '0': "Very Negative",
+        '1': "Negative",
+        '2': "Neutral",
+        '3': "Positive",
+        '4': "Very Positive"
     }
 
 
@@ -99,11 +99,11 @@ def test_origin(ice_num, data):
     }
 
     tp_dict = {
-        0 : "</E>Movie Review: </text> \n Very Negative",
-        1 : "</E>Movie Review: </text> \n Negative",
-        2 : "</E>Movie Review: </text> \n Neutral" ,
-        3 : "</E>Movie Review: </text> \n Positive" ,
-        4 : "</E>Movie Review: </text> \n Very Positive" 
+        '0' : "</E>Movie Review: </text> \n Very Negative",
+        '1' : "</E>Movie Review: </text> \n Negative",
+        '2' : "</E>Movie Review: </text> \n Neutral" ,
+        '3' : "</E>Movie Review: </text> \n Positive" ,
+        '4' : "</E>Movie Review: </text> \n Very Positive" 
     }
 
     column_token_map = {'text': '</text>', '0' : '</P>', '1' : '</N>' }
