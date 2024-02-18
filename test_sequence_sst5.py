@@ -44,7 +44,7 @@ from openicl import PromptTemplate
 def test_soft(ice_num, data):
 
     # need to make them show percentage
-    ice_dict = "</E> Movie Review: </text> \n Very Positive </VP>% Positive </P>% Neutral </N>% Negative </NG>% Very Negative </VN>%"
+    ice_dict = "</E> Movie Review: </text> Very Positive </VP>% Positive </P>% Neutral </N>% Negative </NG>% Very Negative </VN>%"
     #ice_dict = "</E>Movie Review: </text> \n</Label1> </Label2>%"
 
     tp_dict = {
