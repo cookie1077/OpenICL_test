@@ -57,11 +57,11 @@ def test_sequence(ice_num, data):
     }
 
     label_dict = {
-        '0': "Very Negative",
-        '1': "Negative",
-        '2': "Neutral",
-        '3': "Positive",
-        '4': "Very Positive"
+        0: "Very Negative",
+        1: "Negative",
+        2: "Neutral",
+        3: "Positive",
+        4: "Very Positive"
     }
 
 
