@@ -64,7 +64,7 @@ def test_soft(ice_num, data):
     }
 
 
-    column_token_map = {'text': '</text>', '4' : '</VP>', '3' : '</P>', '2' : '</N>', '1' : '</NG>', '0' : '</VN>' }
+    column_token_map = {'text': '</text>', 4 : '</VP>', 3 : '</P>', 2 : '</N>', 1 : '</NG>', 0 : '</VN>' }
     ice_template = PromptTemplate(ice_dict, column_token_map, label_dict=label_dict, ice_token='</E>')
     prompt_template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
 
