@@ -16,9 +16,9 @@ def gen(file_path):
         for line in f:
             yield json.loads(line)
             
-train_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/train_sst2.jsonl"})
-val_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/train_sst2.jsonl"})
-test_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/train_sst2.jsonl"})
+train_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/new/train_sst5.jsonl"})
+val_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/new/train_sst5.jsonl"})
+test_ds = Dataset.from_generator(gen, gen_kwargs={"file_path": "data/new/train_sst5.jsonl"})
 
 dataset_dict = DatasetDict({"train": train_ds, "validation": val_ds, "test": test_ds})
 dataset = dataset_dict
