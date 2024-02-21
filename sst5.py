@@ -167,19 +167,19 @@ def test_GT(ice_num, data):
 
     # Inference prompt template
     ice_dict = {
-        0 : "</E>Movie Review: </text> Very Negative",
-        1 : "</E>Movie Review: </text> Negative",
-        2 : "</E>Movie Review: </text> Neutral" ,
-        3 : "</E>Movie Review: </text> Positive" ,
-        4 : "</E>Movie Review: </text> Very Positive" 
+        0 : "</E>Movie Review: </text>: Very Negative",
+        1 : "</E>Movie Review: </text>: Negative",
+        2 : "</E>Movie Review: </text>: Neutral" ,
+        3 : "</E>Movie Review: </text>: Positive" ,
+        4 : "</E>Movie Review: </text>: Very Positive" 
     }
 
     tp_dict = {
-        0 : "</E>Movie Review: </text> Very Negative",
-        1 : "</E>Movie Review: </text> Negative",
-        2 : "</E>Movie Review: </text> Neutral" ,
-        3 : "</E>Movie Review: </text> Positive" ,
-        4 : "</E>Movie Review: </text> Very Positive" 
+        0 : "</E>Movie Review: </text>: Very Negative",
+        1 : "</E>Movie Review: </text>: Negative",
+        2 : "</E>Movie Review: </text>: Neutral" ,
+        3 : "</E>Movie Review: </text>: Positive" ,
+        4 : "</E>Movie Review: </text>: Very Positive" 
     }
 
     column_token_map = {'text': '</text>'}
@@ -190,7 +190,7 @@ def test_GT(ice_num, data):
     from openicl import RandomRetriever
     # Define a retriever using the previous `DataLoader`.
     # `ice_num` stands for the number of data in in-context examples.
-    retriever = RandomRetriever(data, ice_num=ice_num, labels= [0,1,2,3,4] )
+    retriever = RandomRetriever(data, ice_num=ice_num, labels= [0,1,2,3,4])
 
     from openicl import PPLInferencer
     inferencer = PPLInferencer(model_name='distilgpt2', labels= [0,1,2,3,4])
@@ -249,11 +249,11 @@ naive, sequence, binning, gt, pseudo_gt = [], [], [], [], []
 x = [n for n in range(shots)]
 
 for i in range(shots):
-    naive.append(test_naive(i, data)['accuracy'])
-    sequence.append(test_sequence(i, data)['accuracy'])
-    binning.append(test_binning(i, data)['accuracy'])
+    #naive.append(test_naive(i, data)['accuracy'])
+    #sequence.append(test_sequence(i, data)['accuracy'])
+    #binning.append(test_binning(i, data)['accuracy'])
     gt.append(test_GT(i, data)['accuracy'])
-    pseudo_gt.append(test_pseudo_GT(i, data)['accuracy'])
+    #pseudo_gt.append(test_pseudo_GT(i, data)['accuracy'])
 
 print(naive)
 print(sequence)
@@ -261,11 +261,11 @@ print(binning)
 print(gt)
 print(pseudo_gt)
 
-plt.plot(x, naive, label = 'naive')
-plt.plot(x, sequence, label = 'sequence')
-plt.plot(x, binning, label = 'binning')
+#plt.plot(x, naive, label = 'naive')
+#plt.plot(x, sequence, label = 'sequence')
+#plt.plot(x, binning, label = 'binning')
 plt.plot(x, gt, label = 'gt')
-plt.plot(x, pseudo_gt, label = 'pseudo_gt')
+#plt.plot(x, pseudo_gt, label = 'pseudo_gt')
 
 plt.legend()
 plt.savefig('/output/sst5.png')
