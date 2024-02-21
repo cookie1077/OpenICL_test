@@ -121,7 +121,7 @@ def test_sequence(ice_num, data):
 def test_binning(ice_num, data):
 
     # ICL exemplar template
-    ice_dict = "</E>Movie Review: </text> </Label1> </1>% </Label2> </2>% </Label3> </3>% </Label4> </4>% </Label5> </5>%"
+    ice_dict = "</E>Movie Review: </text> </Label1> is very likely, </Label2> is likely, </Label3> could be likely, </Label4> is not likely, </Label5> is not very likely"
 
     # Inference prompt template
     tp_dict = {
@@ -245,22 +245,25 @@ def test_pseudo_GT(ice_num, data):
     return score
 
 shots = 10
-naive, sequence, gt, pseudo_gt = [], [], [], []
+naive, sequence, binning, gt, pseudo_gt = [], [], [], [], []
 x = [n for n in range(shots)]
 
 for i in range(shots):
     naive.append(test_naive(i, data)['accuracy'])
     sequence.append(test_sequence(i, data)['accuracy'])
+    binning.append(test_binning(i, data)['accuracy'])
     gt.append(test_GT(i, data)['accuracy'])
     pseudo_gt.append(test_pseudo_GT(i, data)['accuracy'])
 
 print(naive)
 print(sequence)
+print(binning)
 print(gt)
 print(pseudo_gt)
 
 plt.plot(x, naive, label = 'naive')
 plt.plot(x, sequence, label = 'sequence')
+plt.plot(x, binning, label = 'binning')
 plt.plot(x, gt, label = 'gt')
 plt.plot(x, pseudo_gt, label = 'pseudo_gt')
 
