@@ -45,11 +45,11 @@ test_dataset = dataset['test']  # gets the testing split
 from openicl import PromptTemplate
 
 # need to make them show percentage
-ice_dict = "</E> Movie Review: </text> \n Positive </P>% Negative </N>%"
+ice_dict = "</E> Movie Review: </text> Positive </P>% Negative </N>%"
 
 ice_dict2 = {
-    0 : "</E>Movie Review: </text> \n Negative",
-    1 : "</E>Movie Review: </text> \n Positive",
+    0 : "</E>Movie Review: </text> Negative",
+    1 : "</E>Movie Review: </text> Positive",
 }
 
 tp_dict = {

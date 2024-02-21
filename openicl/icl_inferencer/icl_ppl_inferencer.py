@@ -54,7 +54,8 @@ class PPLInferencer(BaseInferencer):
 
     def inference(self, retriever: BaseRetriever, ice_template: Optional[PromptTemplate] = None,
                   prompt_template: Optional[PromptTemplate] = None, output_json_filepath: Optional[str] = None,
-                  output_json_filename: Optional[str] = None, normalizing_str: Optional[str] = None) -> List:
+                  output_json_filename: Optional[str] = None, normalizing_str: Optional[str] = None,
+                  pseudo_gt: Optional[str] = None) -> List:
         # 1. Preparation for output logs
         output_handler = PPLInferencerOutputHandler(self.accelerator)
 
@@ -80,7 +81,7 @@ class PPLInferencer(BaseInferencer):
         # 4. Generate in-context examples for testing inputs
         # TODO : generate icl examples with whole labels. 
         for idx in range(len(ice_idx_list)):
-            ice.append(retriever.generate_ice(ice_idx_list[idx], ice_template=ice_template))
+            ice.append(retriever.generate_ice(ice_idx_list[idx], ice_template=ice_template, pseudo_gt=pseudo_gt))
         output_handler.save_ice(ice)
 
         print(ice[0])
