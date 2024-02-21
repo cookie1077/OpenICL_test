@@ -166,6 +166,7 @@ def test_binning(ice_num, data):
 def test_GT(ice_num, data):
 
     # Inference prompt template
+    '''
     ice_dict = {
         0 : "</E>Movie Review: </text>: Very Negative",
         1 : "</E>Movie Review: </text>: Negative",
@@ -181,10 +182,19 @@ def test_GT(ice_num, data):
         3 : "</E>Movie Review: </text>: Positive" ,
         4 : "</E>Movie Review: </text>: Very Positive" 
     }
+    '''
+
+    ice_dict = {
+        0 : "</E>Movie Review: </text>\nSentiment: Very Negative",
+        1 : "</E>Movie Review: </text>\nSentiment: Negative",
+        2 : "</E>Movie Review: </text>\nSentiment: Neutral" ,
+        3 : "</E>Movie Review: </text>\nSentiment: Positive" ,
+        4 : "</E>Movie Review: </text>\nSentiment: Very Positive" 
+    }
 
     column_token_map = {'text': '</text>'}
     ice_template = PromptTemplate(ice_dict, column_token_map, ice_token='</E>')
-    prompt_template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
+    prompt_template = PromptTemplate(ice_dict, {'text': '</text>'}, ice_token='</E>')
 
 
     from openicl import RandomRetriever
