@@ -106,6 +106,51 @@ def test_sequence(ice_num, data):
     
     return score
 
+
+def test_binning(ice_num, data):
+
+    # ICL exemplar template
+    ice_dict = "</E>Movie Review: </text> </Label1> is very likely, </Label2> is not very likely"
+
+    # Inference prompt template
+    tp_dict = {
+        '0' : "</E>Movie Review: </text> Negative",
+        '1' : "</E>Movie Review: </text> Positive"
+    }
+
+    label_dict = {
+        '0': "Negative",
+        '1': "Positive"
+    }
+
+
+    column_token_map = {
+        'text': '</text>', 
+        'Label1' : '</Label1>', 
+        'Label2' : '</Label2>' 
+    }
+
+    ice_template = PromptTemplate(ice_dict, column_token_map, label_dict=label_dict, ice_token='</E>')
+    prompt_template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
+
+
+    from openicl import RandomRetriever
+    # Define a retriever using the previous `DataLoader`.
+    # `ice_num` stands for the number of data in in-context examples.
+    retriever = RandomRetriever(data, ice_num=ice_num, labels= ['0', '1'], order=True)
+
+    from openicl import PPLInferencer
+    inferencer = PPLInferencer(model_name='distilgpt2', labels= ['0', '1'])
+
+    from openicl import AccEvaluator
+    # the inferencer requires retriever to collect in-context examples, as well as a template to wrap up these examples.
+    predictions = inferencer.inference(retriever, ice_template=ice_template, prompt_template=prompt_template)
+    # compute accuracy for the prediction
+    score = AccEvaluator().score(predictions=predictions, references=data.references)
+    
+    return score
+
+
 def test_GT(ice_num, data):
 
     # Inference prompt template
@@ -175,23 +220,26 @@ def test_pseudo_GT(ice_num, data):
     
     return score
 
-shots = 20
-naive, sequence, gt, pseudo_gt = [], [], [], []
+shots = 10
+naive, sequence, binning, gt, pseudo_gt = [], [], [], [], []
 x = [n for n in range(shots)]
 
 for i in range(shots):
     naive.append(test_naive(i, data)['accuracy'])
     sequence.append(test_sequence(i, data)['accuracy'])
+    binning.append(test_binning(i, data)['accuracy'])
     gt.append(test_GT(i, data)['accuracy'])
     pseudo_gt.append(test_pseudo_GT(i, data)['accuracy'])
 
 print(naive)
 print(sequence)
+print(binning)
 print(gt)
 print(pseudo_gt)
 
 plt.plot(x, naive, label = 'naive')
 plt.plot(x, sequence, label = 'sequence')
+plt.plot(x, binning, label = 'binning')
 plt.plot(x, gt, label = 'gt')
 plt.plot(x, pseudo_gt, label = 'pseudo_gt')
 
