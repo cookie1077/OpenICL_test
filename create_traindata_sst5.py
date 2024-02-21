@@ -32,11 +32,11 @@ test_dataset = dataset['test']  # gets the testing split
 
 from openicl import PromptTemplate
 tp_dict = {
-    0 : "</E>Movie Review: </text>\nVery Negative",
-    1 : "</E>Movie Review: </text>\nNegative",
-    2 : "</E>Movie Review: </text>\nNeutral" ,
-    3 : "</E>Movie Review: </text>\nPositive" ,
-    4 : "</E>Movie Review: </text>\nVery Positive" 
+    0 : "</E>Movie Review: </text> Very Negative",
+    1 : "</E>Movie Review: </text> Negative",
+    2 : "</E>Movie Review: </text> Neutral" ,
+    3 : "</E>Movie Review: </text> Positive" ,
+    4 : "</E>Movie Review: </text> Very Positive" 
 }
 
 template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
