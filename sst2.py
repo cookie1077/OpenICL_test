@@ -1,6 +1,7 @@
 from datasets import load_dataset
 from datasets import Dataset, DatasetDict
 from openicl import DatasetReader
+import matplotlib.pyplot as plt
 import json
 import vessl 
 
@@ -174,7 +175,7 @@ def test_pseudo_GT(ice_num, data):
     
     return score
 
-shots = 10
+shots = 20
 naive, sequence, gt, pseudo_gt = [], [], [], []
 x = [n for n in range(shots)]
 
@@ -189,12 +190,10 @@ print(sequence)
 print(gt)
 print(pseudo_gt)
 
-import matplotlib.pyplot as plt
-
-plt.plot(x, naive)
-plt.plot(x, sequence)
-plt.plot(x, gt)
-plt.plot(x, pseudo_gt)
+plt.plot(x, naive, label = 'naive')
+plt.plot(x, sequence, label = 'sequence')
+plt.plot(x, gt, label = 'gt')
+plt.plot(x, pseudo_gt, label = 'pseudo_gt')
 
 plt.legend()
 plt.savefig('/output/sst2.png')
