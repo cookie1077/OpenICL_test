@@ -258,11 +258,11 @@ naive, sequence, binning, gt, pseudo_gt = [], [], [], [], []
 x = [n for n in range(shots)]
 
 for i in range(shots):
-    #naive.append(test_naive(i, data)['accuracy'])
-    #sequence.append(test_sequence(i, data)['accuracy'])
-    #binning.append(test_binning(i, data)['accuracy'])
+    naive.append(test_naive(i, data)['accuracy'])
+    sequence.append(test_sequence(i, data)['accuracy'])
+    binning.append(test_binning(i, data)['accuracy'])
     gt.append(test_GT(i, data)['accuracy'])
-    #pseudo_gt.append(test_pseudo_GT(i, data)['accuracy'])
+    pseudo_gt.append(test_pseudo_GT(i, data)['accuracy'])
 
 print(naive)
 print(sequence)
@@ -270,11 +270,11 @@ print(binning)
 print(gt)
 print(pseudo_gt)
 
-#plt.plot(x, naive, label = 'naive')
-#plt.plot(x, sequence, label = 'sequence')
-#plt.plot(x, binning, label = 'binning')
+plt.plot(x, naive, label = 'naive')
+plt.plot(x, sequence, label = 'sequence')
+plt.plot(x, binning, label = 'binning')
 plt.plot(x, gt, label = 'gt')
-#plt.plot(x, pseudo_gt, label = 'pseudo_gt')
+plt.plot(x, pseudo_gt, label = 'pseudo_gt')
 
 plt.legend()
 plt.savefig('/output/sst5.png')
