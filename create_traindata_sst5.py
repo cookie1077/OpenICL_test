@@ -31,12 +31,23 @@ train_dataset = dataset['train']  # gets the training split
 test_dataset = dataset['test']  # gets the testing split
 
 from openicl import PromptTemplate
+
+'''
 tp_dict = {
     0 : "</E>Movie Review: </text> Very Negative",
     1 : "</E>Movie Review: </text> Negative",
     2 : "</E>Movie Review: </text> Neutral" ,
     3 : "</E>Movie Review: </text> Positive" ,
     4 : "</E>Movie Review: </text> Very Positive" 
+}
+'''
+
+tp_dict = {
+    0 : "</E>Review: </text>\nSentiment: terrible",
+    1 : "</E>Review: </text>\nSentiment: bad",
+    2 : "</E>Review: </text>\nSentiment: okay" ,
+    3 : "</E>Review: </text>\nSentiment: good" ,
+    4 : "</E>Review: </text>\nSentiment: great" 
 }
 
 template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
@@ -61,7 +72,7 @@ for i, p in enumerate(predictions):
 
 # Save predictions as file ! 
 
-with open('/output/train_spaced_sst5.jsonl', 'w') as f:
+with open('/output/train_label_sst5.jsonl', 'w') as f:
     for entry in predictions:
         json.dump(entry, f)
         f.write('\n')
