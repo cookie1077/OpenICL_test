@@ -253,7 +253,7 @@ def test_pseudo_GT(ice_num, data):
     
     return score
 
-shots = 5
+shots = 10
 naive, sequence, binning, gt, pseudo_gt = [], [], [], [], []
 x = [n for n in range(shots)]
 
