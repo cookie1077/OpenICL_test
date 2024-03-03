@@ -55,10 +55,10 @@ def test_naive(ice_num, data):
     prompt_template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
 
 
-    from openicl import RandomRetriever
+    from openicl import TopkRetriever
     # Define a retriever using the previous `DataLoader`.
     # `ice_num` stands for the number of data in in-context examples.
-    retriever = RandomRetriever(data, ice_num=ice_num, labels= ['0', '1', '2', '3', '4'], order=True)
+    retriever = TopkRetriever(data, ice_num=ice_num, labels= ['0', '1', '2', '3', '4'], order=True)
 
     from openicl import PPLInferencer
     inferencer = PPLInferencer(model_name='EleutherAI/gpt-neo-2.7B', labels= ['0', '1', '2', '3', '4'])
@@ -100,10 +100,10 @@ def test_sequence(ice_num, data):
     prompt_template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
 
 
-    from openicl import RandomRetriever
+    from openicl import TopkRetriever
     # Define a retriever using the previous `DataLoader`.
     # `ice_num` stands for the number of data in in-context examples.
-    retriever = RandomRetriever(data, ice_num=ice_num, labels= ['0', '1', '2', '3', '4'], order=True)
+    retriever = TopkRetriever(data, ice_num=ice_num, labels= ['0', '1', '2', '3', '4'], order=True)
 
     from openicl import PPLInferencer
     inferencer = PPLInferencer(model_name='EleutherAI/gpt-neo-2.7B', labels= ['0', '1', '2', '3', '4'])
@@ -145,10 +145,10 @@ def test_binning(ice_num, data):
     prompt_template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
 
 
-    from openicl import RandomRetriever
+    from openicl import TopkRetriever
     # Define a retriever using the previous `DataLoader`.
     # `ice_num` stands for the number of data in in-context examples.
-    retriever = RandomRetriever(data, ice_num=ice_num, labels= ['0', '1', '2', '3', '4'], order=True)
+    retriever = TopkRetriever(data, ice_num=ice_num, labels= ['0', '1', '2', '3', '4'], order=True)
 
     from openicl import PPLInferencer
     inferencer = PPLInferencer(model_name='EleutherAI/gpt-neo-2.7B', labels= ['0', '1', '2', '3', '4'])
@@ -196,10 +196,10 @@ def test_GT(ice_num, data):
     prompt_template = PromptTemplate(ice_dict, {'text': '</text>'}, ice_token='</E>')
 
 
-    from openicl import RandomRetriever
+    from openicl import TopkRetriever
     # Define a retriever using the previous `DataLoader`.
     # `ice_num` stands for the number of data in in-context examples.
-    retriever = RandomRetriever(data, ice_num=ice_num, labels= [0,1,2,3,4])
+    retriever = TopkRetriever(data, ice_num=ice_num, labels= [0,1,2,3,4])
 
     from openicl import PPLInferencer
     inferencer = PPLInferencer(model_name='EleutherAI/gpt-neo-2.7B', labels= [0,1,2,3,4])
@@ -237,10 +237,10 @@ def test_pseudo_GT(ice_num, data):
     prompt_template = PromptTemplate(tp_dict, {'text': '</text>'}, ice_token='</E>')
 
 
-    from openicl import RandomRetriever
+    from openicl import TopkRetriever
     # Define a retriever using the previous `DataLoader`.
     # `ice_num` stands for the number of data in in-context examples.
-    retriever = RandomRetriever(data, ice_num=ice_num, labels= [0,1,2,3,4] )
+    retriever = TopkRetriever(data, ice_num=ice_num, labels= [0,1,2,3,4] )
 
     from openicl import PPLInferencer
     inferencer = PPLInferencer(model_name='EleutherAI/gpt-neo-2.7B', labels= [0,1,2,3,4])
@@ -253,7 +253,7 @@ def test_pseudo_GT(ice_num, data):
     
     return score
 
-shots = 10
+shots = 5
 naive, sequence, binning, gt, pseudo_gt = [], [], [], [], []
 x = [n for n in range(shots)]
 
@@ -263,6 +263,7 @@ for i in range(shots):
     binning.append(test_binning(i, data)['accuracy'])
     gt.append(test_GT(i, data)['accuracy'])
     pseudo_gt.append(test_pseudo_GT(i, data)['accuracy'])
+
 
 print(naive)
 print(sequence)

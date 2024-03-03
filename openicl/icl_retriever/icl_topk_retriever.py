@@ -7,7 +7,7 @@ from openicl.utils.collators import DataCollatorWithPaddingAndCuda
 from openicl.utils.logging import get_logger
 import torch
 from torch.utils.data import DataLoader
-from typing import Optional
+from typing import Optional, List
 from transformers import AutoTokenizer
 from sentence_transformers import SentenceTransformer
 import tqdm
@@ -52,10 +52,12 @@ class TopkRetriever(BaseRetriever):
                  test_split: Optional[str] = 'test',
                  tokenizer_name: Optional[str] = 'gpt2-xl',
                  batch_size: Optional[int] = 1,
-                 accelerator: Optional[Accelerator] = None
+                 accelerator: Optional[Accelerator] = None,
+                 labels: Optional[List] = None,
+                 order: Optional[bool] = False
                  ) -> None:
         super().__init__(dataset_reader, ice_separator, ice_eos_token, prompt_eos_token, ice_num, index_split,
-                         test_split, accelerator)
+                         test_split, accelerator, labels, order)
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.batch_size = batch_size
         self.tokenizer_name = tokenizer_name
