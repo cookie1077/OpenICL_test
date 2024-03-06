@@ -57,7 +57,7 @@ def test_naive(ice_num, data):
     retriever = TopkRetriever(data, ice_num=ice_num, labels= ['0', '1'], order=True)
 
     from openicl import PPLInferencer
-    inferencer = PPLInferencer(model_name='distilgpt2', labels= ['0', '1'])
+    inferencer = PPLInferencer(model_name='EleutherAI/gpt-neo-2.7B', labels= ['0', '1'])
 
     from openicl import AccEvaluator
     # the inferencer requires retriever to collect in-context examples, as well as a template to wrap up these examples.
@@ -96,7 +96,7 @@ def test_sequence(ice_num, data):
     retriever = TopkRetriever(data, ice_num=ice_num, labels= ['0', '1'], order=True)
 
     from openicl import PPLInferencer
-    inferencer = PPLInferencer(model_name='distilgpt2', labels= ['0', '1'])
+    inferencer = PPLInferencer(model_name='EleutherAI/gpt-neo-2.7B', labels= ['0', '1'])
 
     from openicl import AccEvaluator
     # the inferencer requires retriever to collect in-context examples, as well as a template to wrap up these examples.
@@ -140,7 +140,7 @@ def test_binning(ice_num, data):
     retriever = TopkRetriever(data, ice_num=ice_num, labels= ['0', '1'], order=True)
 
     from openicl import PPLInferencer
-    inferencer = PPLInferencer(model_name='distilgpt2', labels= ['0', '1'])
+    inferencer = PPLInferencer(model_name='EleutherAI/gpt-neo-2.7B', labels= ['0', '1'])
 
     from openicl import AccEvaluator
     # the inferencer requires retriever to collect in-context examples, as well as a template to wrap up these examples.
@@ -175,7 +175,7 @@ def test_GT(ice_num, data):
     retriever = TopkRetriever(data, ice_num=ice_num, labels= [0,1] )
 
     from openicl import PPLInferencer
-    inferencer = PPLInferencer(model_name='distilgpt2', labels= [0,1])
+    inferencer = PPLInferencer(model_name='EleutherAI/gpt-neo-2.7B', labels= [0,1])
 
     from openicl import AccEvaluator
     # the inferencer requires retriever to collect in-context examples, as well as a template to wrap up these examples.
@@ -210,7 +210,7 @@ def test_pseudo_GT(ice_num, data):
     retriever = TopkRetriever(data, ice_num=ice_num, labels= [0,1] )
 
     from openicl import PPLInferencer
-    inferencer = PPLInferencer(model_name='distilgpt2', labels= [0,1])
+    inferencer = PPLInferencer(model_name='EleutherAI/gpt-neo-2.7B', labels= [0,1])
 
     from openicl import AccEvaluator
     # the inferencer requires retriever to collect in-context examples, as well as a template to wrap up these examples.
