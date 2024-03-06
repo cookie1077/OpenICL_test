@@ -6,7 +6,7 @@ import json
 print('working')
 # code snippet to transfer codes 
 # Open both files
-with open('data/sst2/train_sst2.jsonl', 'r') as f2, open('data/sst2/train_spaced_sst2.jsonl', 'r') as f1:
+with open('data/sst2/train_sst2.jsonl', 'r') as f2, open('data/sst2/train_diff_sst2.jsonl', 'r') as f1:
     lines1 = f1.readlines()
     lines2 = f2.readlines()
 
@@ -32,7 +32,7 @@ for line1, line2 in zip(lines1, lines2):
     new_rows.append(json1)
 
 # Write the new rows to a new file
-with open('data/sst2/train_spaced_sst2.jsonl', 'w') as f:
+with open('data/sst2/train_diff_sst2.jsonl', 'w') as f:
     for row in new_rows:
         f.write(json.dumps(row) + '\n')
 
@@ -62,4 +62,4 @@ def process_jsonl(file_path, output_file_path):
     df.to_json(output_file_path, orient='records', lines=True)
     return df
 
-df = process_jsonl('data/sst2/train_spaced_sst2.jsonl', 'data/sst2/train_spaced_sst2.jsonl')
+df = process_jsonl('data/sst2/train_diff_sst2.jsonl', 'data/sst2/train_diff_sst2.jsonl')
