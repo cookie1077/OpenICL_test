@@ -127,7 +127,9 @@ class PPLInferencer(BaseInferencer):
                     normalizing_prompt_list.append(normalizing_prompt)
                 prompt_list.append(prompt)
 
+            print('Printing LLM prompt -------------')
             print(prompt_list[0])
+            print('----------------------------------')
 
             if normalizing_str is not None:
                 normalizing_str_len = self.get_input_token_num(normalizing_str)
@@ -157,6 +159,9 @@ class PPLInferencer(BaseInferencer):
 
         # 6. Get lowest PPL class as predictions
         ppl = list(zip(*ppl))
+        print('First prediction -------------')
+        print(ppl[0])
+        print('----------------------------------')
         for single_ppl in ppl:
             sub_predictions.append(labels[single_ppl.index(min(single_ppl))])
         output_handler.save_predictions(sub_predictions)
